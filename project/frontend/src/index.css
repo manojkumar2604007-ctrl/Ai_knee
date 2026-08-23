@@ -1,0 +1,230 @@
+:root {
+  --color-bg: #f4f7f9;
+  --color-panel: #ffffff;
+  --color-border: #dbe4ea;
+  --color-primary: #1f6f8b;
+  --color-primary-dark: #164f63;
+  --color-accent: #2a9d8f;
+  --color-warning: #b5541a;
+  --color-text: #1e2a30;
+  --color-text-muted: #5b6b73;
+  --radius: 10px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.app-shell {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.app-header h1 {
+  font-size: 22px;
+  color: var(--color-primary-dark);
+  margin: 0;
+}
+
+.disclaimer-banner {
+  background: #fff6ec;
+  border: 1px solid #f0d9b5;
+  color: var(--color-warning);
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.panel {
+  background: var(--color-panel);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 18px;
+  margin-bottom: 20px;
+}
+
+.panel h2 {
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-primary);
+  margin-top: 0;
+  margin-bottom: 14px;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 8px;
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin-bottom: 4px;
+  margin-top: 10px;
+}
+
+input, select {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+button {
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 14px;
+}
+
+button:hover { background: var(--color-primary-dark); }
+button:disabled { background: #a9b6bc; cursor: not-allowed; }
+
+button.secondary {
+  background: transparent;
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary);
+}
+
+.status-msg {
+  font-size: 13px;
+  margin-top: 10px;
+  color: var(--color-text-muted);
+}
+
+.status-msg.error { color: #b3261e; }
+.status-msg.success { color: var(--color-accent); }
+
+.measurement-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.measurement-table th, .measurement-table td {
+  text-align: left;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.measurement-table th {
+  color: var(--color-text-muted);
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.badge.calibrated { background: #dff3ee; color: var(--color-accent); }
+.badge.uncalibrated { background: #fbe6e1; color: #b3261e; }
+.badge.mock { background: #eef1f4; color: var(--color-text-muted); }
+
+.image-canvas-wrap {
+  position: relative;
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: #0d1b1f;
+  min-height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-canvas-wrap img, .image-canvas-wrap canvas {
+  max-width: 100%;
+  display: block;
+}
+
+.legend {
+  display: flex;
+  gap: 14px;
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+.legend-swatch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  margin-right: 6px;
+}
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.tab-btn {
+  background: var(--color-panel);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  margin-top: 0;
+}
+
+.tab-btn.active {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+.report-block {
+  margin-bottom: 16px;
+}
+
+.report-block h3 {
+  font-size: 13px;
+  color: var(--color-primary);
+  margin-bottom: 6px;
+}
+
+.small-note {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-top: 6px;
+}
