@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 /**
  * Renders the uploaded knee image with an overlay indicating the
@@ -17,9 +17,11 @@ import React, { useEffect, useRef } from "react";
 export default function ImageViewer({ imageUrl, analysis }) {
   const canvasRef = useRef(null);
   const imgRef = useRef(null);
+  const [sweepKey, setSweepKey] = useState(0);
 
   useEffect(() => {
     draw();
+    setSweepKey((k) => k + 1); // re-trigger the scan-line sweep on new image/analysis
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imageUrl, analysis]);
 
@@ -40,26 +42,26 @@ export default function ImageViewer({ imageUrl, analysis }) {
 
     const midline = h / 2;
 
-    // Femur region (top half) - blue
-    ctx.fillStyle = "rgba(59, 130, 246, 0.25)";
+    // Femur region (top half) - phosphor cyan
+    ctx.fillStyle = "rgba(79, 209, 197, 0.18)";
     ctx.fillRect(0, 0, w, midline);
-    ctx.strokeStyle = "rgba(59, 130, 246, 0.9)";
+    ctx.strokeStyle = "rgba(79, 209, 197, 0.85)";
     ctx.strokeRect(0, 0, w, midline);
 
-    // Tibia region (bottom half) - green
-    ctx.fillStyle = "rgba(42, 157, 143, 0.25)";
+    // Tibia region (bottom half) - contrast amber
+    ctx.fillStyle = "rgba(232, 163, 61, 0.18)";
     ctx.fillRect(0, midline, w, h - midline);
-    ctx.strokeStyle = "rgba(42, 157, 143, 0.9)";
+    ctx.strokeStyle = "rgba(232, 163, 61, 0.85)";
     ctx.strokeRect(0, midline, w, h - midline);
 
-    // Meniscus band (medial half, around midline) - orange
+    // Meniscus band (medial half, around midline) - bone white
     const bandHalf = Math.max(2, h / 60);
-    ctx.fillStyle = "rgba(245, 158, 11, 0.35)";
+    ctx.fillStyle = "rgba(237, 239, 242, 0.28)";
     ctx.fillRect(0, midline - bandHalf, w / 2, bandHalf * 2);
-    ctx.strokeStyle = "rgba(245, 158, 11, 0.9)";
+    ctx.strokeStyle = "rgba(237, 239, 242, 0.9)";
     ctx.strokeRect(0, midline - bandHalf, w / 2, bandHalf * 2);
 
-    // Sampling location markers (anterior / mid / posterior)
+    // Sampling location markers (anterior / mid / posterior) - signal red
     const locations = analysis?.meniscus?.locations_px || {};
     const fractions = { anterior: 0.2, mid: 0.5, posterior: 0.8 };
     Object.entries(fractions).forEach(([label, frac]) => {
@@ -67,18 +69,18 @@ export default function ImageViewer({ imageUrl, analysis }) {
       const x = frac * (w / 2);
       ctx.beginPath();
       ctx.arc(x, midline, 5, 0, Math.PI * 2);
-      ctx.fillStyle = "#b3261e";
+      ctx.fillStyle = "#FF6B6B";
       ctx.fill();
-      ctx.fillStyle = "#b3261e";
-      ctx.font = "12px sans-serif";
-      ctx.fillText(label, x - 12, midline - bandHalf - 6);
+      ctx.fillStyle = "#FF6B6B";
+      ctx.font = "600 12px 'JetBrains Mono', monospace";
+      ctx.fillText(label, x - 14, midline - bandHalf - 8);
     });
   }
 
   return (
     <div className="panel">
       <h2>3. Knee Image & Segmentation Overlay</h2>
-      <div className="image-canvas-wrap">
+      <div className="image-canvas-wrap viewbox">
         {imageUrl ? (
           <>
             <img
@@ -90,16 +92,19 @@ export default function ImageViewer({ imageUrl, analysis }) {
               crossOrigin="anonymous"
             />
             <canvas ref={canvasRef} />
+            <div className="scan-sweep" key={sweepKey} aria-hidden="true" />
           </>
         ) : (
-          <span style={{ color: "#9fb0b8" }}>Upload an image to preview it here.</span>
+          <span style={{ color: "#4A5866", fontFamily: "var(--font-mono)", fontSize: 13 }}>
+            No image loaded — upload a knee image to preview it here.
+          </span>
         )}
       </div>
       <div className="legend">
-        <span><span className="legend-swatch" style={{ background: "#3b82f6" }}></span>Femur (mock region)</span>
-        <span><span className="legend-swatch" style={{ background: "#2a9d8f" }}></span>Tibia (mock region)</span>
-        <span><span className="legend-swatch" style={{ background: "#f59e0b" }}></span>Meniscus band</span>
-        <span><span className="legend-swatch" style={{ background: "#b3261e" }}></span>Sample point</span>
+        <span><span className="legend-swatch" style={{ background: "#4FD1C5" }}></span>Femur (mock region)</span>
+        <span><span className="legend-swatch" style={{ background: "#E8A33D" }}></span>Tibia (mock region)</span>
+        <span><span className="legend-swatch" style={{ background: "#EDEFF2" }}></span>Meniscus band</span>
+        <span><span className="legend-swatch" style={{ background: "#FF6B6B" }}></span>Sample point</span>
       </div>
       {analysis && (
         <div className="small-note">
